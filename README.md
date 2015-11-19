@@ -1,33 +1,29 @@
-Asserv
-======
+Polar Control
+=============
 
-Asserv
-------
-ramp_dist: Générateur de rampe pour des consignes de distance
-ramp_speed: Générateur de rampe pour des consignes de vitesse
-odo: Odométrie
-asserv: Asservissement en position ou en vitesse, usuellement deux instances
-sont utilisé, l’une pour l’asserv en delta, et l’autre pour l’asserv en alpha.
-pid: Pid, 2 instances sont utilisé par chaque objet asserv (un pour l’asserv en
-position, et l’autre pour l’asserv en vitesse)
-motion: Communique les consignes à asserv, les génère préalablement si
-nécessaire grâce à ramp_dist et ramp_speed. Propose pleins de fonctions de
-contrôle, mais seulement 4 devrait être utilisé :
-- motion_dist_rot, consigne de distance et/ou rotation (relative)
-- motion_speed, consigne de vitesse rectiligne
-- motion_omega, consigne de vitesse en rotation
-- motion_speed_omega, consigne de vitesse rectiligne et rotation
-Les autres fonctions risques de créer quelques secousses lorsque enchaînées de
-manière défavorable. C’est également le cas des consigne de vitesse et omega
-pour le moment, faire attention à être à l’arrêt sur l’autre axe.
-La fin des consignes est mal (ou pas) géré pour le moment : seules les consignes de distance et rotation provoque un done lors de la fin de la génération de rampe, il est prévu de rajouter une condition sur les pid.
+Polar Control
+-------------
+ramp_dist: Ramp generator for distance set points
+ramp_speed: Ramp generator for speed set points
+
+odo: Dead reckoning
+asserv: Speed/value control loops, you usually instanciate it twice: one for delta, the other for alpha.
+pid: PID, 2 instances are used for each asserv object (one for the value asserv, the other for the speed asserv)
+motion: Controls the asserv module, taking into account ramp_dist and ramp_speed. Provides the following important functions:
+- motion_dist_rot, control of distance and/or rotation (relative)
+- motion_speed, control of speeds for linear trajectories
+- motion_omega, control of rotational speed
+- motion_speed_omega, control of both linear speed and rotational speed
+The other motion functions could cause jerks / sharp stops if they are chained clumsily.
+Currently, this is also true for linear speed control and omega. Take care of having stopped relative to the other axis.
+The end of control is not handled perfectly yet : only the distance and rotation control will signal when reaching their target / the end of the ramp. Code should be added to read the PID value at some point.
 
 
 Simu
 ----
-Simulateur en python + box2d
+Simulator with python + box2d
 
 
 Pic
 ---
-Code pour dsPIC33F
+Code for dsPIC33F
